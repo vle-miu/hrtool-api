@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="PATH_ROOT">c:/logs/hrtool</Property>
+    </Properties>
+    <Appenders>
+        <Console name="consoleLog" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <RollingFile name="debugLog" fileName="${PATH_ROOT}/hrtool-api-debug.log"
+                     filePattern="${PATH_ROOT}/hrtool-api-debug-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="DEBUG" maxLevel="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="warnLog" fileName="${PATH_ROOT}/hrtool-api-warn.log"
+                     filePattern="${PATH_ROOT}/hrtool-api-warn-%d{yyyy-MM-dd}-%i.log">
+            <LevelRangeFilter minLevel="WARN" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="infoLog" fileName="${PATH_ROOT}/hrtool-api-info.log"
+                     filePattern="${PATH_ROOT}/hrtool-api-info-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="INFO" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        <RollingFile name="errorLog" fileName="${PATH_ROOT}/hrtool-api-error.log"
+                     filePattern="${PATH_ROOT}/hrtool-api-error-%d{yyyy-MM-dd}-%i.log" >
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="mti.vn.hrtool" additivity="false">
+            <AppenderRef ref="debugLog" />
+            <AppenderRef ref="warnLog" />
+            <AppenderRef ref="infoLog"  />
+            <AppenderRef ref="errorLog" />
+            <AppenderRef ref="consoleLog"  />
+        </Logger>
+        <Root level="debug">
+            <AppenderRef ref="consoleLog"/>
+        </Root>
+    </Loggers>
+</Configuration>

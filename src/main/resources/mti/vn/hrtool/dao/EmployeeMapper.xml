@@ -1,0 +1,80 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mti.vn.hrtool.dao.EmployeeMapper">
+    <resultMap id="EmployeeResultMap" type="mti.vn.hrtool.models.Employee">
+        <id column="employee_no" property="employeeNo" />
+        <result column="first_name" property="firstName" />
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <result column="phone_number" property="phoneNumber" />
+        <result column="date_of_birth" property="dateOfBirth" />
+        <result column="joining_date" property="joiningDate" />
+        <result column="official_date" property="officialDate" />
+        <result column="resign_date" property="resignDate" />
+        <association property='department' resultMap='DepartmentResultMap'/>
+        <association property='position' resultMap='PositionResultMap'/>
+        <association property='level' resultMap='LevelResultMap'/>
+    </resultMap>
+    <resultMap id="DepartmentResultMap" type="mti.vn.hrtool.models.Department">
+        <id column="department_cd" property="departmentCd" />
+        <result column="department_name" property="departmentName" />
+    </resultMap>
+    <resultMap id="PositionResultMap" type="mti.vn.hrtool.models.Position">
+        <id column="position_cd" property="positionCd" />
+        <result column="position_name" property="positionName" />
+    </resultMap>
+    <resultMap id="LevelResultMap" type="mti.vn.hrtool.models.Level">
+        <id column="level_cd" property="levelCd" />
+        <result column="level_name" property="levelName" />
+    </resultMap>
+    <select id="findAllEmployees" resultMap="EmployeeResultMap">
+        SELECT
+            e.employee_no,
+            first_name,
+            last_name,
+            email,
+            gender,
+            phone_number,
+            date_of_birth,
+            joining_date,
+            official_date,
+            resign_date,
+            dm.department_cd,
+            dm.department_name,
+            pm.position_cd,
+            pm.position_name,
+            lm.level_cd,
+            lm.level_name
+        FROM employee e
+        INNER JOIN department_mst dm ON e.department_cd = dm.department_cd
+        INNER JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
+        INNER JOIN position_mst pm ON pm.position_cd = epli.position_cd
+        INNER JOIN level_mst lm ON lm.level_cd = epli.level_cd
+    </select>
+    <select id="findEmployeeById" parameterType="java.lang.String" resultMap="EmployeeResultMap">
+        SELECT
+            e.employee_no,
+            first_name,
+            last_name,
+            email,
+            gender,
+            phone_number,
+            date_of_birth,
+            joining_date,
+            official_date,
+            resign_date,
+            dm.department_cd,
+            dm.department_name,
+            pm.position_cd,
+            pm.position_name,
+            lm.level_cd,
+            lm.level_name
+        FROM employee e
+        INNER JOIN department_mst dm ON e.department_cd = dm.department_cd
+        INNER JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
+        INNER JOIN position_mst pm ON pm.position_cd = epli.position_cd
+        INNER JOIN level_mst lm ON lm.level_cd = epli.level_cd
+        WHERE e.employee_no = #{employeeNo}
+    </select>
+</mapper>
