@@ -48,10 +48,11 @@
             lm.level_name
         FROM employee e
         INNER JOIN department_mst dm ON e.department_cd = dm.department_cd
-        INNER JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
-        INNER JOIN position_mst pm ON pm.position_cd = epli.position_cd
-        INNER JOIN level_mst lm ON lm.level_cd = epli.level_cd
+        LEFT JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
+        LEFT JOIN position_mst pm ON pm.position_cd = epli.position_cd
+        LEFT JOIN level_mst lm ON lm.level_cd = epli.level_cd
     </select>
+
     <select id="findEmployeeById" parameterType="java.lang.String" resultMap="EmployeeResultMap">
         SELECT
             e.employee_no,
@@ -72,9 +73,35 @@
             lm.level_name
         FROM employee e
         INNER JOIN department_mst dm ON e.department_cd = dm.department_cd
-        INNER JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
-        INNER JOIN position_mst pm ON pm.position_cd = epli.position_cd
-        INNER JOIN level_mst lm ON lm.level_cd = epli.level_cd
+        LEFT JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
+        LEFT JOIN position_mst pm ON pm.position_cd = epli.position_cd
+        LEFT JOIN level_mst lm ON lm.level_cd = epli.level_cd
         WHERE e.employee_no = #{employeeNo}
+    </select>
+
+    <select id="findAllEmployeesByDepartmentCd" parameterType="java.lang.String" resultMap="EmployeeResultMap">
+        SELECT
+            e.employee_no,
+            first_name,
+            last_name,
+            email,
+            gender,
+            phone_number,
+            date_of_birth,
+            joining_date,
+            official_date,
+            resign_date,
+            dm.department_cd,
+            dm.department_name,
+            pm.position_cd,
+            pm.position_name,
+            lm.level_cd,
+            lm.level_name
+        FROM employee e
+        INNER JOIN department_mst dm ON e.department_cd = dm.department_cd
+        LEFT JOIN employee_position_level_info epli ON e.employee_no = epli.employee_no
+        LEFT JOIN position_mst pm ON pm.position_cd = epli.position_cd
+        LEFT JOIN level_mst lm ON lm.level_cd = epli.level_cd
+        WHERE e.department_cd = #{departmentCd}
     </select>
 </mapper>

@@ -10,4 +10,6 @@ public interface EmployeeService {
 
     Employee findEmployeeById(String employeeNo);
 
+    List<Employee> findAllEmployeesByDepartmentCd(String departmentCd);
+
 }

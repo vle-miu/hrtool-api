@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,8 +41,18 @@ public class EmployeeController {
     })
     @GetMapping(value = "/employee/{employeeNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Employee findEmployeeById(
-            @ApiParam(value = "Employee No from which employee object will retrieve", required = true) @PathVariable("employeeNo") String employeeNo) {
+            @ApiParam(value = "Employee Number from which employee object will retrieve", required = true) @PathVariable("employeeNo") String employeeNo) {
         return employeeService.findEmployeeById(employeeNo);
+    }
+
+    @ApiOperation(value = "Find all employees of department")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list")
+    })
+    @GetMapping(value = "/employees/{departmentCd}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Employee> findAllEmployeeByDepartmentCd(
+            @ApiParam(value = "Department Code use to find all employees in this department", required = true) @PathVariable("departmentCd") String departmentCd) {
+        return employeeService.findAllEmployeesByDepartmentCd(departmentCd);
     }
 
 }

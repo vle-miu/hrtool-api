@@ -12,4 +12,6 @@ public interface EmployeeMapper {
 
     Employee findEmployeeById(String employeeNo);
 
+    List<Employee> findAllEmployeesByDepartmentCd(String departmentCd);
+
 }
