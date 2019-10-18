@@ -1,10 +1,12 @@
 package mti.vn.hrtool;
 
+import mti.vn.hrtool.filters.CORSFilter;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -39,6 +41,14 @@ public class AppConfiguration {
         factoryBean.setMapperLocations(pathMatchingResourcePatternResolver.getResources(env.getProperty("mybatis.mapperLocations")));
         factoryBean.setDataSource(dataSource());
         return factoryBean.getObject();
+    }
+
+    @Bean
+    public FilterRegistrationBean<CORSFilter> corsFilter(){
+        FilterRegistrationBean<CORSFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new CORSFilter());
+        registrationBean.addUrlPatterns("/api/*");
+        return registrationBean;
     }
 
 }
